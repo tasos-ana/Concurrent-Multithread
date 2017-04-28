@@ -6,16 +6,16 @@
 
 void initStack(void) {
     int status;
-    concurrentStack = (stack_p) malloc(sizeof (stack_t));
-    concurrentStack->top = NULL;
-    status = pthread_mutex_init(&concurrentStack->mutex, NULL);
+    modStack = (stack_p) malloc(sizeof (stack_t));
+    modStack->top = NULL;
+    status = pthread_mutex_init(&modStack->mutex, NULL);
     if (status != 0) {
         handle_error_en(status, "pthread_mutex_init");
     }
 }
 
 int isEmptyStack() {
-    return (concurrentStack->top == NULL);
+    return (modStack->top == NULL);
 }
 
 stackNode_p createNode(int action, int fileID, int newFileSize) {
@@ -28,16 +28,16 @@ stackNode_p createNode(int action, int fileID, int newFileSize) {
     return node;
 }
 
-int push(stackNode_p node) {
+void push(stackNode_p node) {
     int status;
-    if ((status = pthread_mutex_lock(&(concurrentStack->mutex))) != 0) {
+    if ((status = pthread_mutex_lock(&(modStack->mutex))) != 0) {
         handle_error_en(status, "pthread_mutex_lock");
     }
 
-    node->next = concurrentStack->top;
-    concurrentStack->top = node;
+    node->next = modStack->top;
+    modStack->top = node;
 
-    if ((status = pthread_mutex_unlock(&(concurrentStack->mutex))) != 0) {
+    if ((status = pthread_mutex_unlock(&(modStack->mutex))) != 0) {
         handle_error_en(status, "pthread_mutex_unlock");
     }
 }
@@ -47,35 +47,44 @@ stackNode_p pop() {
         return NULL;
     } else {
         int status;
-        if ((status = pthread_mutex_lock(&(concurrentStack->mutex))) != 0) {
+        if ((status = pthread_mutex_lock(&(modStack->mutex))) != 0) {
             handle_error_en(status, "pthread_mutex_lock");
         }
 
-        stackNode_p tmp = concurrentStack->top;
-        concurrentStack->top = tmp->next;
+        stackNode_p tmp = modStack->top;
+        modStack->top = tmp->next;
 
-        if ((status = pthread_mutex_unlock(&(concurrentStack->mutex))) != 0) {
+        if ((status = pthread_mutex_unlock(&(modStack->mutex))) != 0) {
             handle_error_en(status, "pthread_mutex_unlock");
         }
+
+        return tmp;
     }
 }
 
 void printStack() {
     if (isEmptyStack()) {
-        return NULL;
+        return;
     } else {
         int status;
-        if ((status = pthread_mutex_lock(&(concurrentStack->mutex))) != 0) {
+        if ((status = pthread_mutex_lock(&(modStack->mutex))) != 0) {
             handle_error_en(status, "pthread_mutex_lock");
         }
 
-        stackNode_p current = concurrentStack->top;
+        stackNode_p current = modStack->top;
         while (current != NULL) {
-            printf("%c %d %d \n", (char) (current->action), current->fileID, current->newFileSize);
+            printf("%c ", (char) (current->action));
+            if (current->fileID != -1) {
+                printf("%d ", current->fileID);
+            }
+            if (current->newFileSize != -1) {
+                printf("%d ", current->newFileSize);
+            }
+            printf("\n");
             current = current->next;
         }
 
-        if ((status = pthread_mutex_unlock(&(concurrentStack->mutex))) != 0) {
+        if ((status = pthread_mutex_unlock(&(modStack->mutex))) != 0) {
             handle_error_en(status, "pthread_mutex_unlock");
         }
     }
