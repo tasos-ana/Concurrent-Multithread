@@ -8,12 +8,12 @@ typedef struct stackNode {
     int fileID;
     int newFileSize;
     struct stackNode* next;
-} *stackNode_p, stackNode_t;
+} *stackNode_p, stackNode_s;
 
 typedef struct stack {
     stackNode_p top;
     pthread_mutex_t mutex;
-} *stack_p, stack_t;
+} *stack_p, stack_s;
 
 stack_p modStack;
 

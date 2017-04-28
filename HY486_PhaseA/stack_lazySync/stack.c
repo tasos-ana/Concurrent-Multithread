@@ -6,9 +6,9 @@
 
 void initStack(void) {
     int status;
-    modStack = (stack_p) malloc(sizeof (stack_t));
+    modStack = (stack_p) malloc(sizeof (stack_s));
     modStack->top = NULL;
-    status = pthread_mutex_init(&modStack->mutex, NULL);
+    status = pthread_mutex_init(&(modStack->mutex), NULL);
     if (status != 0) {
         handle_error_en(status, "pthread_mutex_init");
     }
@@ -19,7 +19,7 @@ int isEmptyStack() {
 }
 
 stackNode_p createNode(int action, int fileID, int newFileSize) {
-    stackNode_p node = (stackNode_p) malloc(sizeof (stackNode_t));
+    stackNode_p node = (stackNode_p) malloc(sizeof (stackNode_s));
     node->action = action;
     node->fileID = fileID;
     node->newFileSize = newFileSize;

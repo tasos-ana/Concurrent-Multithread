@@ -79,10 +79,6 @@ int main(int argc, char** argv) {
                 }
             }
         }
-        //lock for last thread so we didn't exit from function and i lost.
-        if ((status = pthread_mutex_lock(&initThreadsLock)) != 0) {
-            handle_error_en(status, "pthread_mutex_lock");
-        }
         for (i = 0; i < numThreads; i++) {
             pthread_join(threads[i], NULL);
         }
