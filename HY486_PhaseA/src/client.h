@@ -1,7 +1,9 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-void initClients(int num, char* file);
+char* filepath;
+
+void* clientLogic(void * threadID);
 
 #endif // CLIENT_H
 

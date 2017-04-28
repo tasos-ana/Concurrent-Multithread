@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/client.o \
 	${OBJECTDIR}/src/main.o \
 	${OBJECTDIR}/src/updater.o \
+	${OBJECTDIR}/src/utils.o \
 	${OBJECTDIR}/stack_lazySync/list.o \
 	${OBJECTDIR}/stack_lazySync/stack.o
 
@@ -80,6 +81,11 @@ ${OBJECTDIR}/src/updater.o: src/updater.c
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/updater.o src/updater.c
+
+${OBJECTDIR}/src/utils.o: src/utils.c
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/utils.o src/utils.c
 
 ${OBJECTDIR}/stack_lazySync/list.o: stack_lazySync/list.c
 	${MKDIR} -p ${OBJECTDIR}/stack_lazySync

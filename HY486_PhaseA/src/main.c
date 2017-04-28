@@ -9,15 +9,15 @@
 #include <unistd.h>
 #include <string.h>
 
-//#include "client.h"
-//#include "updater.h"
-void usage();
+#include "utils.h"
+#include "client.h"
+#include "updater.h"
 
 int main(int argc, char** argv) {
     int opt;
     int clients = 0;
     int updaters = 0;
-    char *file = NULL;
+    filepath = NULL;
 
     /* A very easy way to parse command line arguments */
     while ((opt = getopt(argc, argv, "c:u:f:")) != -1) {
@@ -29,29 +29,59 @@ int main(int argc, char** argv) {
                 updaters = atoi(optarg);
                 break;
             case 'f':
-                file = strdup(optarg);
+                filepath = strdup(optarg);
                 break;
             default:
                 usage();
                 exit(EXIT_FAILURE);
         }
     }
-    if (clients > 0 && updaters > 0 && file != NULL) {
-        printf("updater: %d \n client: %d\n file: %s\n", updaters, clients, file);
-        free(file);
+    if (clients > 0 && updaters > 0 && filepath != NULL) {
+        int c = -1;
+        int u = -1;
+        int status;
+        pthread_t pth;
+        status = pthread_mutex_init(&initThreadsLock, NULL);
+        if (status != 0) {
+            handle_error_en(status, "pthread_mutex_init");
+        }
+        while (c < (clients - 1) || u < (updaters - 1)) {
+            if (c < (clients - 1)) {
+                //entered on critical region
+                status = pthread_mutex_lock(&initThreadsLock);
+                if (status != 0) {
+                    handle_error_en(status, "pthread_mutex_lock");
+                }
+                ++c;
+                //create client thread, on function we unlock mutex
+                status = pthread_create(&pth, NULL, (void*) clientLogic, (void *) &c);
+                if (status != 0) {
+                    handle_error_en(status, "pthread_create");
+                }
+            }
+            if (u < (updaters - 1)) {
+                //entered on critical region
+                status = pthread_mutex_lock(&initThreadsLock);
+                if (status != 0) {
+                    handle_error_en(status, "pthread_mutex_lock");
+                }
+                ++u;
+                //create updater thread, on function we unlock mutex
+                status = pthread_create(&pth, NULL, (void*) updaterLogic, (void *) &u);
+                if (status!=0) {
+                    handle_error_en(status, "pthread_create");
+                }
+            }
+        }
+        //lock for last thread so we didn't exit from function and i lost.
+        status = pthread_mutex_lock(&initThreadsLock);
+        if (status != 0) {
+            handle_error_en(status, "pthread_mutex_lock");
+        }
+        free(filepath);
     } else {
         usage();
         return EXIT_FAILURE;
     }
     return (EXIT_SUCCESS);
 }
-
-void usage() {
-    printf("Usage: prog -c clientNum -u updaterNum -f file"
-            "Options:\n"
-            "   -c <int>            Set the clients thread number.\n"
-            "   -u <int>            Set the updater thread number.\n"
-            "   -f <string>         Set -f option specifies the file path of the input.\n"
-            "   -h                  prints this help\n");
-}
-
