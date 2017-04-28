@@ -75,6 +75,7 @@ int main(int argc, char** argv) {
         if ((status = pthread_mutex_lock(&initThreadsLock)) != 0) {
             handle_error_en(status, "pthread_mutex_lock");
         }
+        sleep(100);
         free(filepath);
     } else {
         usage();
