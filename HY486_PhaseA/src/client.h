@@ -1,19 +1,24 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <sys/types.h>
+
 char* filepath;
+pthread_barrier_t clientBarrier;
 
 void* clientLogic(void * threadID);
 
-int clientInsert(int threadID, int id, int fileID, int fileSize);
+void clientInsert(int threadID, int id, int fileID, int fileSize);
 
-int clientLookup(int threadID, int id, int fileID);
+void clientLookup(int threadID, int id, int fileID);
 
-int clientModify(int threadID, int id, int fileID, int newFileSize);
+void clientModify(int threadID, int id, int fileID, int newFileSize);
 
-int clientDelete(int threadID, int id, int fileID);
+void clientDelete(int threadID, int id, int fileID);
 
 void barrier(int threadID, int wait);
+
+void clientPrint(int threadID, int id);
 
 #endif // CLIENT_H
 

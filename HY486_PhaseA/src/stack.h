@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 
-stack_p concurrentStack;
-
 typedef struct stackNode {
     int action;
     int fileID;
@@ -17,13 +15,15 @@ typedef struct stack {
     pthread_mutex_t mutex;
 } *stack_p, stack_t;
 
+stack_p modStack;
+
 void initStack(void);
 
 int isEmptyStack();
 
 stackNode_p createNode(int action, int fileID, int newFileSize);
 
-int push(stackNode_p node);
+void push(stackNode_p node);
 
 stackNode_p pop();
 

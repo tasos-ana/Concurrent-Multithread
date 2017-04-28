@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "utils.h"
+#include "stack.h"
 #include "client.h"
 #include "updater.h"
 
@@ -18,7 +19,7 @@ int main(int argc, char** argv) {
     int clients = 0;
     int updaters = 0;
     filepath = NULL;
-
+    int numThreads;
     /* A very easy way to parse command line arguments */
     while ((opt = getopt(argc, argv, "c:u:f:")) != -1) {
         switch (opt) {
@@ -37,16 +38,23 @@ int main(int argc, char** argv) {
         }
     }
     if (clients > 0 && updaters > 0 && filepath != NULL) {
+        numThreads = clients + updaters;
         int c = -1;
         int u = -1;
-        int status;
-        pthread_t pth;
+        int status, i;
+        pthread_t threads[numThreads];
 
         status = pthread_mutex_init(&initThreadsLock, NULL);
         if (status != 0) {
             handle_error_en(status, "pthread_mutex_init");
         }
 
+        status = pthread_barrier_init(&clientBarrier, NULL, clients);
+        if (status != 0) {
+            handle_error_en(status, "pthread_barrier_init");
+        }
+
+        initStack();
         while (c < (clients - 1) || u < (updaters - 1)) {
             if (c < (clients - 1)) {
                 //entered on critical region
@@ -55,7 +63,7 @@ int main(int argc, char** argv) {
                 }
                 ++c;
                 //create client thread, on function we unlock mutex
-                if ((status = pthread_create(&pth, NULL, (void*) clientLogic, (void *) &c)) != 0) {
+                if ((status = pthread_create(&threads[c], NULL, (void*) clientLogic, (void *) &c)) != 0) {
                     handle_error_en(status, "pthread_create");
                 }
             }
@@ -66,7 +74,7 @@ int main(int argc, char** argv) {
                 }
                 ++u;
                 //create updater thread, on function we unlock mutex
-                if ((status = pthread_create(&pth, NULL, (void*) updaterLogic, (void *) &u)) != 0) {
+                if ((status = pthread_create(&threads[clients + u], NULL, (void*) updaterLogic, (void *) &u)) != 0) {
                     handle_error_en(status, "pthread_create");
                 }
             }
@@ -75,7 +83,11 @@ int main(int argc, char** argv) {
         if ((status = pthread_mutex_lock(&initThreadsLock)) != 0) {
             handle_error_en(status, "pthread_mutex_lock");
         }
-        sleep(100);
+        for (i = 0; i < numThreads; i++) {
+            pthread_join(threads[i], NULL);
+        }
+        printStack();
+        pthread_barrier_destroy(&clientBarrier);
         free(filepath);
     } else {
         usage();
