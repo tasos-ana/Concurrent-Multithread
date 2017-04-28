@@ -10,8 +10,7 @@ void* clientLogic(void * threadID) {
     int id = *((int*) threadID);
     int unlock;
     printf("clientCREATED with ID: %d and path: %s\n", id, filepath);
-    unlock = pthread_mutex_unlock(&initThreadsLock);
-    if (unlock != 0) {
+    if ((unlock = pthread_mutex_unlock(&initThreadsLock)) != 0) {
         handle_error_en(unlock, "pthread_mutex_unlock");
     }
 }
