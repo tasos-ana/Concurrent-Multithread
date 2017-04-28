@@ -27,8 +27,8 @@
         <itemPath>src/stack.h</itemPath>
         <itemPath>src/updater.c</itemPath>
         <itemPath>src/updater.h</itemPath>
-        <itemPath>src/util.h</itemPath>
         <itemPath>src/utils.c</itemPath>
+        <itemPath>src/utils.h</itemPath>
       </logicalFolder>
       <logicalFolder name="stack_lazySync"
                      displayName="stack_lazySync"
@@ -81,9 +81,9 @@
       </item>
       <item path="src/updater.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/util.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="stack_lazySync/Makefile" ex="false" tool="3" flavor2="0">
       </item>
@@ -136,9 +136,9 @@
       </item>
       <item path="src/updater.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/util.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="src/utils.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="stack_lazySync/Makefile" ex="false" tool="3" flavor2="0">
       </item>

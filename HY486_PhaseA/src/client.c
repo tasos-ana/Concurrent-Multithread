@@ -5,8 +5,8 @@
 #include <assert.h>
 
 #include "client.h"
+#include "stack.h"
 #include "utils.h"
-#include "updater.h"
 
 void* clientLogic(void * threadID) {
     int id = *((int*) threadID);
@@ -15,7 +15,6 @@ void* clientLogic(void * threadID) {
     char buf[1024];
     char ev;
 
-    printf("clientCREATED with ID: %d and path: %s\n", id, filepath);
     if ((unlock = pthread_mutex_unlock(&initThreadsLock)) != 0) {
         handle_error_en(unlock, "pthread_mutex_unlock");
     }
@@ -32,10 +31,7 @@ void* clientLogic(void * threadID) {
         int fileID;
         switch (ev) {
             case 'I':
-                fileID = asint[1];
-                if (id == fileID) {
-                    printf("I=%d %d %d %d\n", (int) 'I', asint[1], asint[2], asint[3]);
-                }
+                clientInsert(id, asint[1], asint[2], asint[3]);
                 break;
             case 'L':
                 fileID = asint[1];
@@ -71,4 +67,44 @@ void* clientLogic(void * threadID) {
     }
 
     fclose(fp);
+}
+
+/*
+ *  insert  :   73
+ *  lookup  :   76
+ *  modify  :   77
+ *  delete  :   68
+ */
+void clientInsert(int threadID, int id, int fileID, int fileSize) {
+    if (threadID == id) {
+        int ret;
+        ret = push(createNode((int) 'I', fileID, fileSize));
+        printf("I %d %d %d %s\n", threadID, fileID, fileSize, ret ? "SUCCEEDED" : "FAILED");
+    }
+}
+
+void clientLookup(int threadID, int id, int fileID) {
+    if (threadID == id) {
+
+    }
+}
+
+void clientModify(int threadID, int id, int fileID, int newFileSize) {
+    if (threadID == id) {
+
+    }
+}
+
+void clientDelete(int threadID, int id, int fileID) {
+    if (threadID == id) {
+
+    }
+}
+
+void clientBarrier(int threadID, int wait) {
+    if (wait == 1) {
+        printf("%d BARRIER WAIT\n", threadID);
+    } else {
+        printf("%d BARRIER CONTINUE\n", threadID);
+    }
 }
