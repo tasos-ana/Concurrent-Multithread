@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "../src/stack.h"
 #include "../src/utils.h"
@@ -15,7 +16,18 @@ void initStack(void) {
 }
 
 int isEmptyStack() {
-    return (modStack->top == NULL);
+    int status;
+    if ((status = pthread_mutex_lock(&(modStack->mutex))) != 0) {
+        handle_error_en(status, "pthread_mutex_lock");
+    }
+
+    int retVal = (modStack->top == NULL);
+
+    if ((status = pthread_mutex_unlock(&(modStack->mutex))) != 0) {
+        handle_error_en(status, "pthread_mutex_unlock");
+    }
+
+    return retVal;
 }
 
 stackNode_p createNode(int action, int fileID, int newFileSize) {
@@ -43,23 +55,19 @@ void push(stackNode_p node) {
 }
 
 stackNode_p pop() {
-    if (isEmptyStack()) {
-        return NULL;
-    } else {
-        int status;
-        if ((status = pthread_mutex_lock(&(modStack->mutex))) != 0) {
-            handle_error_en(status, "pthread_mutex_lock");
-        }
-
-        stackNode_p tmp = modStack->top;
-        modStack->top = tmp->next;
-
-        if ((status = pthread_mutex_unlock(&(modStack->mutex))) != 0) {
-            handle_error_en(status, "pthread_mutex_unlock");
-        }
-
-        return tmp;
+    int status;
+    if ((status = pthread_mutex_lock(&(modStack->mutex))) != 0) {
+        handle_error_en(status, "pthread_mutex_lock");
     }
+    stackNode_p tmp = modStack->top;
+    if (tmp != NULL) {
+        modStack->top = tmp->next;
+    }
+    if ((status = pthread_mutex_unlock(&(modStack->mutex))) != 0) {
+        handle_error_en(status, "pthread_mutex_unlock");
+    }
+
+    return tmp;
 }
 
 void printStack() {

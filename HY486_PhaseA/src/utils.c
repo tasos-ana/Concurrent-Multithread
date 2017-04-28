@@ -14,15 +14,15 @@ void usage(void) {
 }
 
 void tokenize(char *s) { /*tokenization of input arguments*/
-	char *p, *last;
-	int i = 0;
-	for ((p = strtok_r(s, " ", &last)); p;
-	    (p = strtok_r(NULL, " ", &last))) {
-		if (i < LEN(tokens) - 1) {
-			tokens[i] = p;
-			asint[i] = atoi(p);
-			i++;
-		}
-	}
-	tokens[i] = NULL;
+    char *p, *last;
+    int i = 0;
+    for ((p = strtok_r(s, " ", &last)); p;
+            (p = strtok_r(NULL, " ", &last))) {
+        if (i < LEN(tokens) - 1) {
+            tokens[i] = p;
+            asint[i] = atoi(p);
+            i++;
+        }
+    }
+    tokens[i] = NULL;
 }

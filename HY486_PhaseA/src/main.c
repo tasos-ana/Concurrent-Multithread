@@ -55,6 +55,8 @@ int main(int argc, char** argv) {
         }
 
         initStack();
+        total_operations = 0;
+        clientsDone = 0;
         while (c < (clients - 1) || u < (updaters - 1)) {
             if (c < (clients - 1)) {
                 //entered on critical region
@@ -79,9 +81,17 @@ int main(int argc, char** argv) {
                 }
             }
         }
-        for (i = 0; i < numThreads; i++) {
+        for (i = 0; i < c; i++) {
             pthread_join(threads[i], NULL);
         }
+        clientsDone = 1;
+        printf("clients done\n");
+
+        for (i = c; i < c + u; i++) {
+            pthread_join(threads[i], NULL);
+        }
+        printf("updaters done\n");
+
         printStack();
         pthread_barrier_destroy(&clientBarrier);
         free(filepath);
