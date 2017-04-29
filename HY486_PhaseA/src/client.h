@@ -6,7 +6,7 @@
 char* filepath;
 pthread_barrier_t clientBarrier;
 
-void* clientLogic(void * threadID);
+void* clientLogic(void * id);
 
 void clientInsert(int threadID, int id, int fileID, int fileSize);
 
@@ -20,5 +20,6 @@ void barrier(int threadID, int wait);
 
 void clientPrint(int threadID, int id);
 
+void cleanClient(void);
 #endif // CLIENT_H
 

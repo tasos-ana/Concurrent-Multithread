@@ -17,16 +17,26 @@ typedef struct stack {
 
 stack_p modStack;
 
+pthread_mutex_t printMutex;
+
 void initStack(void);
 
-int isEmptyStack();
+int isEmptyStack(void);
 
 stackNode_p createNode(int action, int fileID, int newFileSize);
 
 void push(stackNode_p node);
 
-stackNode_p pop();
+stackNode_p pop(void);
 
-void printStack();
+void lock(pthread_mutex_t *mutex);
+
+void unlock(pthread_mutex_t *mutex);
+
+void printStack(void);
+
+void printStackItem(stackNode_p item, int threadID);
+
+void cleanStack(void);
 #endif // STACK_H
 

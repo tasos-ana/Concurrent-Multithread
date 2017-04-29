@@ -4,7 +4,7 @@
 int total_operations;
 int clientsDone;
 
-void* updaterLogic(void * threadID);
+void* updaterLogic(void * id);
 
 void updaterInsert(int threadID, int id, int fileID, int fileSize);
 

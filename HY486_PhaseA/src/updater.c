@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <assert.h>
 
 #include "updater.h"
 #include "utils.h"
 #include "stack.h"
 
-void* updaterLogic(void * threadID) {
-    int id = *((int*) threadID);
+void* updaterLogic(void * id) {
+    int threadID = *((int*) id);
     int status;
 
     if ((status = pthread_mutex_unlock(&initThreadsLock)) != 0) {
@@ -15,21 +16,14 @@ void* updaterLogic(void * threadID) {
     }
 
     while (1) {
-        if (isEmptyStack() && clientsDone) {
+        if (clientsDone && isEmptyStack()) {
+            assert(modStack->top == NULL);
             break;
         } else {
             stackNode_p item = pop();
-            if (item != NULL) {
-                printf("%c ", (char) (item->action));
-                printf("%d ", id);
-                if (item->fileID != -1) {
-                    printf("%d ", item->fileID);
-                }
-                if (item->newFileSize != -1) {
-                    printf("%d ", item->newFileSize);
-                }
-                printf("\n");
-            }
+            printStackItem(item, threadID);
+            free(item);
+            item = NULL;
         }
     }
 

@@ -8,12 +8,15 @@
 #include "stack.h"
 #include "utils.h"
 
-void* clientLogic(void * threadID) {
-    int id = *((int*) threadID);
+void* clientLogic(void * id) {
+    int threadID = *((int*) id);
     int status;
     FILE *fp;
     char buf[1024];
     char ev;
+
+    char *tokens[LEN_TOKENS];
+    int asint[LEN_TOKENS];
 
     if ((status = pthread_mutex_unlock(&initThreadsLock)) != 0) {
         handle_error_en(status, "pthread_mutex_unlock");
@@ -26,28 +29,28 @@ void* clientLogic(void * threadID) {
 
     while (fgets(buf, sizeof (buf), fp) != NULL) {
         buf[strcspn(buf, "\n")] = '\0';
-        tokenize(buf);
+        tokenize(tokens, asint, buf);
         ev = *tokens[0];
         switch (ev) {
             case 'I':
-                clientInsert(id, asint[1], asint[2], asint[3]);
+                clientInsert(threadID, asint[1], asint[2], asint[3]);
                 break;
             case 'L':
-                clientLookup(id, asint[1], asint[2]);
+                clientLookup(threadID, asint[1], asint[2]);
                 break;
             case 'M':
-                clientModify(id, asint[1], asint[2], asint[3]);
+                clientModify(threadID, asint[1], asint[2], asint[3]);
                 break;
             case 'D':
-                clientDelete(id, asint[1], asint[2]);
+                clientDelete(threadID, asint[1], asint[2]);
                 break;
             case 'B':
-                barrier(id, 1);
+                barrier(threadID, 1);
                 pthread_barrier_wait(&clientBarrier);
-                barrier(id, 0);
+                barrier(threadID, 0);
                 break;
             case 'P':
-                clientPrint(id, asint[1]);
+                clientPrint(threadID, asint[1]);
                 break;
             default:
                 fclose(fp);
@@ -101,4 +104,14 @@ void clientPrint(int threadID, int id) {
     if (threadID == id) {
         push(createNode((int) 'P', -1, -1));
     }
+}
+
+void cleanClient(void) {
+    int status = pthread_barrier_destroy(&clientBarrier);
+    if (status != 0) {
+        handle_error_en(status, "pthread_barrier_destroy");
+    }
+
+    free(filepath);
+    filepath = NULL;
 }

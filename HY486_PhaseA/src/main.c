@@ -81,20 +81,21 @@ int main(int argc, char** argv) {
                 }
             }
         }
-        for (i = 0; i < c; i++) {
+        for (i = 0; i < clients; i++) {
             pthread_join(threads[i], NULL);
         }
         clientsDone = 1;
         printf("clients done\n");
 
-        for (i = c; i < c + u; i++) {
+        for (i = clients; i < clients + updaters; i++) {
             pthread_join(threads[i], NULL);
         }
         printf("updaters done\n");
 
         printStack();
-        pthread_barrier_destroy(&clientBarrier);
-        free(filepath);
+        
+        cleanClient();
+        cleanStack();
     } else {
         usage();
         return EXIT_FAILURE;

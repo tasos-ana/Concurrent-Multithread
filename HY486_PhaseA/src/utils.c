@@ -13,12 +13,12 @@ void usage(void) {
             "   -h                  prints this help\n");
 }
 
-void tokenize(char *s) { /*tokenization of input arguments*/
+void tokenize(char **tokens, int *asint, char *s) { /*tokenization of input arguments*/
     char *p, *last;
     int i = 0;
     for ((p = strtok_r(s, " ", &last)); p;
             (p = strtok_r(NULL, " ", &last))) {
-        if (i < LEN(tokens) - 1) {
+        if (i < LEN_TOKENS - 1) {
             tokens[i] = p;
             asint[i] = atoi(p);
             i++;
