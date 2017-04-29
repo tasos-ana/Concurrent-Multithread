@@ -8,8 +8,8 @@ LIBS = -pthread
   # the build target executable:
 default: prog clean_o
 
-prog: main.o client.o updater.o utils.o stack.o #list.o
-	$(CC) $(CFLAGS) -o prog main.o client.o updater.o utils.o stack.o $(LIBS) #list.o
+prog: main.o client.o updater.o utils.o stack.o list.o
+	$(CC) $(CFLAGS) -o prog main.o client.o updater.o utils.o stack.o list.o $(LIBS)
  
 main.o: ../src/main.c ../src/utils.h ../src/client.h ../src/updater.h ../src/stack.h
 	$(CC) $(CFLAGS) -c ../src/main.c
@@ -26,8 +26,8 @@ utils.o: ../src/utils.c ../src/utils.h
 stack.o: stack.c ../src/stack.h ../src/utils.h
 	$(CC) $(CFLAGS) -c stack.c
 
-#list.o: list.c ../src/list.h
-#	$(CC) $(CFLAGS) -c list.c
+list.o: list.c ../src/list.h
+	$(CC) $(CFLAGS) -c list.c
 
 # To start over from scratch, type 'make clean'.  This
 # removes the executable file, as well as old .o object

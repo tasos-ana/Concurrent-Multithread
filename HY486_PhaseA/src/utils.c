@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <sys/types.h>
 
 #include "utils.h"
 
@@ -25,4 +27,46 @@ void tokenize(char **tokens, int *asint, char *s) { /*tokenization of input argu
         }
     }
     tokens[i] = NULL;
+}
+
+void lock(pthread_mutex_t *mutex) {
+    int status;
+    if ((status = pthread_mutex_lock(mutex)) != 0) {
+        handle_error_en(status, "pthread_mutex_lock");
+    }
+}
+
+void unlock(pthread_mutex_t *mutex) {
+    int status;
+    if ((status = pthread_mutex_unlock(mutex)) != 0) {
+        handle_error_en(status, "pthread_mutex_unlock");
+    }
+}
+
+void initMutex(pthread_mutex_t *mutex) {
+    int status = pthread_mutex_init(mutex, NULL);
+    if (status != 0) {
+        handle_error_en(status, "pthread_mutex_init");
+    }
+}
+
+void destroyMutex(pthread_mutex_t *mutex) {
+    int status = pthread_mutex_destroy(mutex);
+    if (status != 0) {
+        handle_error_en(status, "pthread_mutex_destroy");
+    }
+}
+
+void initBarrier(pthread_barrier_t *barrier, int num) {
+    int status = pthread_barrier_init(barrier, NULL, num);
+    if (status != 0) {
+        handle_error_en(status, "pthread_barrier_init");
+    }
+}
+
+void destroyBarrier(pthread_barrier_t *barrier) {
+    int status = pthread_barrier_destroy(barrier);
+    if (status != 0) {
+        handle_error_en(status, "pthread_barrier_destroy");
+    }
 }

@@ -1,36 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include "../src/stack.h"
 #include "../src/utils.h"
 
 void initStack(void) {
-    int status;
     modStack = (stack_p) malloc(sizeof (stack_s));
     modStack->top = NULL;
-    status = pthread_mutex_init(&(modStack->mutex), NULL);
-    if (status != 0) {
-        handle_error_en(status, "pthread_mutex_init");
-    }
-
-    status = pthread_mutex_init(&printMutex, NULL);
-    if (status != 0) {
-        handle_error_en(status, "pthread_mutex_init");
-    }
+    initMutex(&(modStack->mutex));
+    initMutex(&printStackMutex);
 }
 
 int isEmptyStack() {
     lock(&(modStack->mutex));
-
     int retVal = (modStack->top == NULL);
-
     unlock(&(modStack->mutex));
 
     return retVal;
 }
 
-stackNode_p createNode(int action, int fileID, int newFileSize) {
+stackNode_p createStackNode(int action, int fileID, int newFileSize) {
     stackNode_p node = (stackNode_p) malloc(sizeof (stackNode_s));
     node->action = action;
     node->fileID = fileID;
@@ -40,16 +29,14 @@ stackNode_p createNode(int action, int fileID, int newFileSize) {
     return node;
 }
 
-void push(stackNode_p node) {
+void pushStack(stackNode_p node) {
     lock(&(modStack->mutex));
-
     node->next = modStack->top;
     modStack->top = node;
-
     unlock(&(modStack->mutex));
 }
 
-stackNode_p pop(void) {
+stackNode_p popStack(void) {
     lock(&(modStack->mutex));
     stackNode_p tmp = modStack->top;
     if (tmp != NULL) {
@@ -58,20 +45,6 @@ stackNode_p pop(void) {
     unlock(&(modStack->mutex));
 
     return tmp;
-}
-
-void lock(pthread_mutex_t *mutex) {
-    int status;
-    if ((status = pthread_mutex_lock(mutex)) != 0) {
-        handle_error_en(status, "pthread_mutex_lock");
-    }
-}
-
-void unlock(pthread_mutex_t *mutex) {
-    int status;
-    if ((status = pthread_mutex_unlock(mutex)) != 0) {
-        handle_error_en(status, "pthread_mutex_unlock");
-    }
 }
 
 void printStack() {
@@ -100,7 +73,7 @@ void printStack() {
 }
 
 void printStackItem(stackNode_p item, int threadID) {
-    lock(&printMutex);
+    lock(&printStackMutex);
     if (item != NULL) {
         printf("%c ", (char) (item->action));
         printf("%d ", threadID);
@@ -113,13 +86,10 @@ void printStackItem(stackNode_p item, int threadID) {
         printf("\n");
         fflush(stdout);
     }
-    unlock(&printMutex);
+    unlock(&printStackMutex);
 }
 
 void cleanStack(void) {
-    
-    lock(&(modStack->mutex));
-
     //free the stack
     stackNode_p current = modStack->top, tmp;
     while (current != NULL) {
@@ -129,18 +99,9 @@ void cleanStack(void) {
         tmp = NULL;
     }
 
-    unlock(&(modStack->mutex));
-
-    int status = pthread_mutex_destroy(&(modStack->mutex));
-    if (status != 0) {
-        handle_error_en(status, "pthread_mutex_destroy");
-    }
+    destroyMutex(&(modStack->mutex));
+    destroyMutex(&printStackMutex);
 
     free(modStack);
     modStack = NULL;
-
-    status = pthread_mutex_destroy(&printMutex);
-    if (status != 0) {
-        handle_error_en(status, "pthread_mutex_destroy");
-    }
 }

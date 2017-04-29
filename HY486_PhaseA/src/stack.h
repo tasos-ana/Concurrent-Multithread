@@ -1,7 +1,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <stdio.h>
+#include <sys/types.h>
 
 typedef struct stackNode {
     int action;
@@ -17,21 +17,17 @@ typedef struct stack {
 
 stack_p modStack;
 
-pthread_mutex_t printMutex;
+pthread_mutex_t printStackMutex;
 
 void initStack(void);
 
 int isEmptyStack(void);
 
-stackNode_p createNode(int action, int fileID, int newFileSize);
+stackNode_p createStackNode(int action, int fileID, int newFileSize);
 
-void push(stackNode_p node);
+void pushStack(stackNode_p node);
 
-stackNode_p pop(void);
-
-void lock(pthread_mutex_t *mutex);
-
-void unlock(pthread_mutex_t *mutex);
+stackNode_p popStack(void);
 
 void printStack(void);
 

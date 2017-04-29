@@ -8,9 +8,13 @@
 #include "stack.h"
 #include "utils.h"
 
+void initClients(char* file, int clients) {
+    filepath = file;
+    initBarrier(&clientBarrier, clients);
+}
+
 void* clientLogic(void * id) {
     int threadID = *((int*) id);
-    int status;
     FILE *fp;
     char buf[1024];
     char ev;
@@ -18,9 +22,8 @@ void* clientLogic(void * id) {
     char *tokens[LEN_TOKENS];
     int asint[LEN_TOKENS];
 
-    if ((status = pthread_mutex_unlock(&initThreadsLock)) != 0) {
-        handle_error_en(status, "pthread_mutex_unlock");
-    }
+    unlock(&initThreadsLock);
+
     assert(filepath != NULL);
     fp = fopen(filepath, "r");
     if (fp == NULL) {
@@ -45,12 +48,9 @@ void* clientLogic(void * id) {
                 clientDelete(threadID, asint[1], asint[2]);
                 break;
             case 'B':
-                barrier(threadID, 1);
+                //barrier(threadID, 1);
                 pthread_barrier_wait(&clientBarrier);
-                barrier(threadID, 0);
-                break;
-            case 'P':
-                clientPrint(threadID, asint[1]);
+                //barrier(threadID, 0);
                 break;
             default:
                 fclose(fp);
@@ -70,25 +70,25 @@ void* clientLogic(void * id) {
  */
 void clientInsert(int threadID, int id, int fileID, int fileSize) {
     if (threadID == id) {
-        push(createNode((int) 'I', fileID, fileSize));
+        pushStack(createStackNode((int) 'I', fileID, fileSize));
     }
 }
 
 void clientLookup(int threadID, int id, int fileID) {
     if (threadID == id) {
-        push(createNode((int) 'L', fileID, -1));
+        pushStack(createStackNode((int) 'L', fileID, -1));
     }
 }
 
 void clientModify(int threadID, int id, int fileID, int newFileSize) {
     if (threadID == id) {
-        push(createNode((int) 'M', fileID, newFileSize));
+        pushStack(createStackNode((int) 'M', fileID, newFileSize));
     }
 }
 
 void clientDelete(int threadID, int id, int fileID) {
     if (threadID == id) {
-        push(createNode((int) 'D', fileID, -1));
+        pushStack(createStackNode((int) 'D', fileID, -1));
     }
 }
 
@@ -100,18 +100,8 @@ void barrier(int threadID, int wait) {
     }
 }
 
-void clientPrint(int threadID, int id) {
-    if (threadID == id) {
-        push(createNode((int) 'P', -1, -1));
-    }
-}
-
 void cleanClient(void) {
-    int status = pthread_barrier_destroy(&clientBarrier);
-    if (status != 0) {
-        handle_error_en(status, "pthread_barrier_destroy");
-    }
-
+    destroyBarrier(&clientBarrier);
     free(filepath);
     filepath = NULL;
 }

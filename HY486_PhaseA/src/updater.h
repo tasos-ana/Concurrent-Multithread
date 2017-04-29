@@ -1,19 +1,27 @@
 #ifndef UPDATER_H
 #define UPDATER_H
 
+#include <sys/types.h>
+
 int total_operations;
 int clientsDone;
 
+pthread_mutex_t totalOperationMutex;
+
+void initUpdaters(void);
+
 void* updaterLogic(void * id);
 
-void updaterInsert(int threadID, int id, int fileID, int fileSize);
+void updaterInsert(int threadID, int fileID, int fileSize);
 
-void updaterLookup(int threadID, int id, int fileID);
+void updaterLookup(int threadID, int fileID);
 
-void updaterModify(int threadID, int id, int fileID, int newFileSize);
+void updaterModify(int threadID, int fileID, int newFileSize);
 
-void updaterDelete(int threadID, int id, int fileID);
+void updaterDelete(int threadID, int fileID);
 
-void updaterPrint(int threadID, int id);
+void increaseOperations(void);
+
+void cleanUpdaters(void);
 #endif // UPDATER_H
 
