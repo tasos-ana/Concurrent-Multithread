@@ -7,6 +7,7 @@
 #include "../headers//updater.h"
 #include "../headers/list.h"
 #include "../headers/utils.h"
+#include "listLazySync.h"
 
 int insertList(int fileID, int fileSize) {
     listNode_p pred, curr;

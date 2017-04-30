@@ -48,9 +48,9 @@ void* clientLogic(void * id) {
                 clientDelete(threadID, asint[1], asint[2]);
                 break;
             case 'B':
-                //barrier(threadID, 1);
+                barrier(threadID, 1);
                 pthread_barrier_wait(&clientBarrier);
-                //barrier(threadID, 0);
+                barrier(threadID, 0);
                 break;
             default:
                 fclose(fp);

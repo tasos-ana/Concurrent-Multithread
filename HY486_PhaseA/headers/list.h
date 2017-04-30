@@ -33,8 +33,6 @@ int lookupList(int fileID);
 
 int modifyList(int fileID, int newFileSize);
 
-int validateList(listNode_p pred, listNode_p curr);
-
 void printList(void);
 
 void printListNode(listNode_p node);

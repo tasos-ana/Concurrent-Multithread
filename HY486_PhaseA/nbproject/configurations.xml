@@ -32,6 +32,7 @@
                      displayName="ListLazySync"
                      projectFiles="true">
         <itemPath>ListLazySync/listLazySync.c</itemPath>
+        <itemPath>ListLazySync/listLazySync.h</itemPath>
       </logicalFolder>
       <logicalFolder name="source" displayName="source" projectFiles="true">
         <itemPath>source/client.c</itemPath>
@@ -85,6 +86,8 @@
       <item path="ListFGSync/listFGSync.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ListLazySync/listLazySync.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ListLazySync/listLazySync.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="StackCG/stackCG.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -144,6 +147,8 @@
       <item path="ListFGSync/listFGSync.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="ListLazySync/listLazySync.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ListLazySync/listLazySync.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="StackCG/stackCG.c" ex="false" tool="0" flavor2="0">
       </item>
