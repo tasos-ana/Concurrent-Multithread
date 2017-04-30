@@ -15,6 +15,8 @@
 
 pthread_mutex_t initThreadsLock;
 
+int totalThreads;
+
 void usage(void);
 
 void tokenize(char **tokens, int *asint, char *s); /*tokenization of input arguments*/

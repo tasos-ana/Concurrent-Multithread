@@ -48,7 +48,7 @@ void* updaterLogic(void * id) {
                         updaterDelete(threadID, item->fileID);
                         break;
                     default:
-                        handle_error("Invalid event");
+                        handle_error("Invalid event Updaters");
                 }
                 free(item);
                 item = NULL;
@@ -62,17 +62,20 @@ void updaterInsert(int threadID, int fileID, int fileSize) {
     int retVal;
     retVal = insertList(fileID, fileSize);
     printf("I %d %d %d %s\n", threadID, fileID, fileSize, retVal ? "SUCCEEDED" : "FAILED");
+    fflush(stdout);
     increaseOperations();
 }
 
 void updaterLookup(int threadID, int fileID) {
     int retVal;
     retVal = lookupList(fileID);
-    
+
     if (retVal != -1) {
         printf("L %d %d %d SUCCEEDED\n", threadID, fileID, retVal);
+        fflush(stdout);
     } else {
         printf("L %d %d FAILED\n", threadID, fileID);
+        fflush(stdout);
     }
     increaseOperations();
 }
@@ -83,8 +86,10 @@ void updaterModify(int threadID, int fileID, int newFileSize) {
     retVal = modifyList(fileID, newFileSize);
     if (retVal != -1) {
         printf("M %d %d %d %d SUCCEEDED\n", threadID, fileID, retVal, newFileSize);
+        fflush(stdout);
     } else {
         printf("M %d %d FAILED\n", threadID, fileID);
+        fflush(stdout);
     }
 
     increaseOperations();
@@ -95,10 +100,11 @@ void updaterDelete(int threadID, int fileID) {
     retVal = deleteList(fileID);
     if (retVal != -1) {
         printf("D %d %d %d SUCCEEDED\n", threadID, fileID, retVal);
+        fflush(stdout);
     } else {
         printf("D %d %d FAILED\n", threadID, fileID);
+        fflush(stdout);
     }
-    fflush(stdout);
     increaseOperations();
 }
 

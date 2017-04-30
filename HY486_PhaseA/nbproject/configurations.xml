@@ -48,6 +48,7 @@
                      displayName="StackCGWithElim"
                      projectFiles="true">
         <itemPath>StackCGWithElim/stackCGWithElim.c</itemPath>
+        <itemPath>StackCGWithElim/stackCGWithElim.h</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
     </logicalFolder>
@@ -92,6 +93,8 @@
       <item path="StackCG/stackCG.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="StackCGWithElim/stackCGWithElim.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="StackCGWithElim/stackCGWithElim.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="headers/client.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -153,6 +156,8 @@
       <item path="StackCG/stackCG.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="StackCGWithElim/stackCGWithElim.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="StackCGWithElim/stackCGWithElim.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="headers/client.h" ex="false" tool="3" flavor2="0">
       </item>

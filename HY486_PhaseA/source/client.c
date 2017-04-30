@@ -54,7 +54,7 @@ void* clientLogic(void * id) {
                 break;
             default:
                 fclose(fp);
-                handle_error("Invalid event");
+                handle_error("Invalid event Clients");
         }
     }
     fclose(fp);

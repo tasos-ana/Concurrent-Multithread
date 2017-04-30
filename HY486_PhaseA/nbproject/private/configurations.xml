@@ -25,10 +25,13 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -u 4 -c 4 -f c4_</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" -u 4 -c 4 -f c4_u4_f100.txt</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <runcommand>"${OUTPUT_PATH}" -u 4 -c 4 -f c4_u4_f100.txt</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
+        <console-type>2</console-type>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>
         <environment>

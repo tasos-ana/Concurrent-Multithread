@@ -7,13 +7,6 @@
 #include "../headers/stack.h"
 #include "../headers/utils.h"
 
-void initStack(void) {
-    modStack = (stack_p) malloc(sizeof (stack_s));
-    modStack->top = NULL;
-    initMutex(&(modStack->mutex));
-    initMutex(&printStackMutex);
-}
-
 int isEmptyStack() {
     lock(&(modStack->mutex));
     int retVal = (modStack->top == NULL);
@@ -72,21 +65,4 @@ void printStackItem(stackNode_p item, int threadID) {
         fflush(stdout);
     }
     unlock(&printStackMutex);
-}
-
-void cleanStack(void) {
-    //free the stack
-    stackNode_p current = modStack->top, tmp;
-    while (current != NULL) {
-        tmp = current;
-        current = current->next;
-        free(tmp);
-        tmp = NULL;
-    }
-
-    destroyMutex(&(modStack->mutex));
-    destroyMutex(&printStackMutex);
-
-    free(modStack);
-    modStack = NULL;
 }

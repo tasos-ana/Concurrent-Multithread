@@ -9,19 +9,22 @@
 #include <string.h>
 #include <pthread.h>
 #include <sys/types.h>
+#include <inttypes.h>
 
 #include "headers/utils.h"
 #include "headers/client.h"
 #include "headers/updater.h"
 #include "headers/stack.h"
 #include "headers/list.h"
+#include "StackCGWithElim/stackCGWithElim.h"
 
 int main(int argc, char** argv) {
+    uint64_t start, end;
+    start = getNanos();
     int opt;
     int clients = 0;
     int updaters = 0;
     char* file = NULL;
-    int numThreads;
     /* A very easy way to parse command line arguments */
     while ((opt = getopt(argc, argv, "c:u:f:")) != -1) {
         switch (opt) {
@@ -40,11 +43,16 @@ int main(int argc, char** argv) {
         }
     }
     if (clients > 0 && updaters > 0 && file != NULL) {
-        numThreads = clients + updaters;
+        int totThreads = clients + updaters;
+        if (clients > updaters) {
+            totalThreads = clients;
+        } else {
+            totalThreads = updaters;
+        }
         int c = -1;
         int u = -1;
         int status, i;
-        pthread_t threads[numThreads];
+        pthread_t threads[totThreads];
 
         initMutex(&initThreadsLock); //located src/utils
 
@@ -82,13 +90,14 @@ int main(int argc, char** argv) {
             pthread_join(threads[i], NULL);
         }
 
-        //printStack();
-        printList();
+        //printList();
         destroyMutex(&initThreadsLock); //located src/utils
         cleanClient();
         cleanUpdaters();
         cleanStack();
         cleanList();
+        end = getNanos();
+        printf("Time: %" PRIu64 " ms \n", (end - start)/1000000);
     } else {
         usage();
         return EXIT_FAILURE;
