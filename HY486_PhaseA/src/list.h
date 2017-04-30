@@ -7,7 +7,6 @@ typedef struct listNode {
     int fileID; //Key
     int fileSize;
     int marked; // true = 1 --- false = 0
-    int modify;
     pthread_mutex_t mutex;
     struct listNode *next;
 } *listNode_p, listNode_s;

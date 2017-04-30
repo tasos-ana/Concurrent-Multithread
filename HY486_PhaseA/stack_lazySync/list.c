@@ -21,7 +21,6 @@ listNode_p createListNode(int fileID, int fileSize) {
     node->fileID = fileID;
     node->fileSize = fileSize;
     node->marked = 0;
-    node->modify = 0;
     initMutex(&(node->mutex));
     node->next = NULL;
     return node;
@@ -94,17 +93,27 @@ int deleteList(int fileID) {
 
 int lookupList(int fileID) {
     listNode_p curr;
+    int result;
+    int return_flag = 0;
 
-    curr = sharedList->head;
-    while (curr->fileID < fileID) {
-        curr = curr->next;
-    }
-    if (curr->marked == 0 &&
-            curr->modify == 0 &&
-            fileID == curr->fileID) {
-        return curr->fileSize;
-    } else {
-        return -1;
+    while (1) {
+        curr = sharedList->head;
+        while (curr->fileID < fileID) {
+            curr = curr->next;
+        }
+        result = curr->fileSize; //[*]
+        if (curr->marked == 0 &&
+                fileID == curr->fileID) {//[*]
+            if (result == curr->fileSize) { //On succeed then linearized at line 104 {result = curr->fileSize;}
+                return_flag = 1; //on fail linearized at 105 line {if (curr->marked == 0 && fileID == curr->fileID)}
+            }
+        } else { // same linearize point with course material pdf 5
+            result = -1;
+            return_flag = 1;
+        }
+        if (return_flag) {
+            return result;
+        }
     }
 }
 
@@ -120,14 +129,13 @@ int modifyList(int fileID, int newFileSize) {
             pred = curr;
             curr = curr->next;
         }
+
         lock(&(pred->mutex));
         lock(&(curr->mutex));
         if (validateList(pred, curr)) {
             if (fileID == curr->fileID) {
-                curr->modify = 1;
                 result = curr->fileSize;
                 curr->fileSize = newFileSize;
-                curr->modify = 0;
             } else {
                 result = -1;
             }

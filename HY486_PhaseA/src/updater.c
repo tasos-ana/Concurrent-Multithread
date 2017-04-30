@@ -38,9 +38,9 @@ void* updaterLogic(void * id) {
                         updaterLookup(threadID, item->fileID);
                         break;
                     case 'M':
-                        //assert(item->fileID != -1);
-                        //assert(item->newFileSize != -1);
-                        //updaterModify(threadID, item->fileID, item->newFileSize);
+                        assert(item->fileID != -1);
+                        assert(item->newFileSize != -1);
+                        updaterModify(threadID, item->fileID, item->newFileSize);
                         break;
                     case 'D':
                         assert(item->fileID != -1);
@@ -55,7 +55,6 @@ void* updaterLogic(void * id) {
             }
         }
     }
-
     return NULL;
 }
 
@@ -69,8 +68,7 @@ void updaterInsert(int threadID, int fileID, int fileSize) {
 void updaterLookup(int threadID, int fileID) {
     int retVal;
     retVal = lookupList(fileID);
-
-
+    
     if (retVal != -1) {
         printf("L %d %d %d SUCCEEDED\n", threadID, fileID, retVal);
     } else {
@@ -81,10 +79,10 @@ void updaterLookup(int threadID, int fileID) {
 
 void updaterModify(int threadID, int fileID, int newFileSize) {
     int retVal = 0;
-    int oldFileSize = 0;
 
-    if (retVal) {
-        printf("M %d %d %d %d SUCCEEDED\n", threadID, fileID, oldFileSize, newFileSize);
+    retVal = modifyList(fileID, newFileSize);
+    if (retVal != -1) {
+        printf("M %d %d %d %d SUCCEEDED\n", threadID, fileID, retVal, newFileSize);
     } else {
         printf("M %d %d FAILED\n", threadID, fileID);
     }
