@@ -22,9 +22,12 @@ LIST_H = headers/list.h
 LIST_C = source/list.c
 
 STACKCG_C = StackCG/stackCG.c
+
 STACKEL_C = StackCGWithElim/stackCGWithElim.c
 
 LISTLAZY_C = ListLazySync/listLazySync.c
+LISTLAZY_H = ListLazySync/listLazySync.h
+
 LISTFG_C = ListFGSync/listFGSync.c
 
 GENERAL_OBJECTS = .main.o .client.o .updater.o .utils.o .stack.o .list.o
@@ -64,7 +67,7 @@ stackEl_listFG: .stackEl_listFG_compile .clean_o
 .stackEl.o:$(STACKEL_C) $(STACK_H) $(UTILS_H)
 	$(CC) $(CFLAGS) -o stackEl.o -c $(STACKEL_C)
 	
-.listLazy.o:$(LISTLAZY_C) $(LIST_H) $(UTILS_H)
+.listLazy.o:$(LISTLAZY_C) $(LISTLAZY_H) $(LIST_H) $(UTILS_H) 
 	$(CC) $(CFLAGS) -o listLazy.o -c $(LISTLAZY_C)
 	
 .listFG.o:$(LISTFG_C) $(LIST_H) $(UTILS_H)
