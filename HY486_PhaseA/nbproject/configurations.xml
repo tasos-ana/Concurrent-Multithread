@@ -8,10 +8,47 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <logicalFolder name="testfiles" displayName="testfiles" projectFiles="true">
+        <itemPath>testfiles/c4_u4_f1000.txt</itemPath>
+        <itemPath>testfiles/c8_u16_f2000.txt</itemPath>
+        <itemPath>testfiles/c8_u4_f1000.txt</itemPath>
+        <itemPath>testfiles/c8_u8_f2000.txt</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="headers" displayName="headers" projectFiles="true">
+        <itemPath>headers/client.h</itemPath>
+        <itemPath>headers/list.h</itemPath>
+        <itemPath>headers/stack.h</itemPath>
+        <itemPath>headers/updater.h</itemPath>
+        <itemPath>headers/utils.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="ListFGSync" displayName="ListFGSync" projectFiles="true">
+        <itemPath>ListFGSync/listFGSync.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="ListLazySync"
+                     displayName="ListLazySync"
+                     projectFiles="true">
+        <itemPath>ListLazySync/listLazySync.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="source" displayName="source" projectFiles="true">
+        <itemPath>source/client.c</itemPath>
+        <itemPath>source/list.c</itemPath>
+        <itemPath>source/stack.c</itemPath>
+        <itemPath>source/updater.c</itemPath>
+        <itemPath>source/utils.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="StackCG" displayName="StackCG" projectFiles="true">
+        <itemPath>StackCG/stackCG.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="StackCGWithElim"
+                     displayName="StackCGWithElim"
+                     projectFiles="true">
+        <itemPath>StackCGWithElim/stackCGWithElim.c</itemPath>
+      </logicalFolder>
+      <itemPath>main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -23,10 +60,17 @@
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
+      <itemPath>myMakefile</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
     <Elem>headers</Elem>
+    <Elem>StackCG</Elem>
+    <Elem>testfiles</Elem>
+    <Elem>StackCGWithElim</Elem>
+    <Elem>ListFGSync</Elem>
+    <Elem>ListLazySync</Elem>
+    <Elem>source</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -38,6 +82,44 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="ListFGSync/listFGSync.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ListLazySync/listLazySync.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="StackCG/stackCG.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="StackCGWithElim/stackCGWithElim.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="headers/client.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/stack.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/updater.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/utils.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/client.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/list.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/stack.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/updater.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="testfiles/c4_u4_f1000.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="testfiles/c8_u16_f2000.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="testfiles/c8_u4_f1000.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="testfiles/c8_u8_f2000.txt" ex="false" tool="3" flavor2="0">
+      </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
@@ -59,6 +141,44 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="ListFGSync/listFGSync.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ListLazySync/listLazySync.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="StackCG/stackCG.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="StackCGWithElim/stackCGWithElim.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="headers/client.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/stack.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/updater.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers/utils.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/client.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/list.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/stack.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/updater.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="source/utils.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="testfiles/c4_u4_f1000.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="testfiles/c8_u16_f2000.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="testfiles/c8_u4_f1000.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="testfiles/c8_u8_f2000.txt" ex="false" tool="3" flavor2="0">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>

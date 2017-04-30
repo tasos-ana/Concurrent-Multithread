@@ -1,6 +1,7 @@
 /*
  * implementation: Coarse Grained Stack with elimination array
  */
+#include <stdio.h>
 #include "../headers/stack.h"
 
 

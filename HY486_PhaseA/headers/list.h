@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include <stdio.h>
+#include <sys/types.h>
 
 typedef struct listNode {
     int fileID; //Key
