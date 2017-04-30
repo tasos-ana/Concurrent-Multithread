@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "updater.h"
-#include "utils.h"
-#include "stack.h"
-#include "list.h"
+#include "../headers/updater.h"
+#include "../headers/utils.h"
+#include "../headers/stack.h"
+#include "../headers/list.h"
 
 void initUpdaters(void) {
     total_operations = 0;

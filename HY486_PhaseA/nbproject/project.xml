@@ -4,17 +4,13 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
             <name>HY486_PhaseA</name>
-            <c-extensions>c</c-extensions>
+            <c-extensions/>
             <cpp-extensions/>
-            <header-extensions>h</header-extensions>
+            <header-extensions/>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>testfiles</sourceRootElem>
-                <sourceRootElem>CG-Stack with elimination</sourceRootElem>
-                <sourceRootElem>CG-Stack without elimination</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>stack_lazySync</sourceRootElem>
+                <sourceRootElem>headers</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

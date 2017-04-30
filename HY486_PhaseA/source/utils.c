@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <sys/types.h>
 
-#include "utils.h"
+#include "../headers/utils.h"
 
 void usage(void) {
     printf("Usage: prog -c clientNum -u updaterNum -f file"

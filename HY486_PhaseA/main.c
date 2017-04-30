@@ -10,11 +10,11 @@
 #include <pthread.h>
 #include <sys/types.h>
 
-#include "utils.h"
-#include "client.h"
-#include "updater.h"
-#include "stack.h"
-#include "list.h"
+#include "headers/utils.h"
+#include "headers/client.h"
+#include "headers/updater.h"
+#include "headers/stack.h"
+#include "headers/list.h"
 
 int main(int argc, char** argv) {
     int opt;

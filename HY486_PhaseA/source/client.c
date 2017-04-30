@@ -4,9 +4,9 @@
 #include <pthread.h>
 #include <assert.h>
 
-#include "client.h"
-#include "stack.h"
-#include "utils.h"
+#include "../headers/client.h"
+#include "../headers/stack.h"
+#include "../headers/utils.h"
 
 void initClients(char* file, int clients) {
     filepath = file;

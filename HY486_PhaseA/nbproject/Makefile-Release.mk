@@ -34,13 +34,7 @@ include Makefile
 OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
-OBJECTFILES= \
-	${OBJECTDIR}/src/client.o \
-	${OBJECTDIR}/src/main.o \
-	${OBJECTDIR}/src/updater.o \
-	${OBJECTDIR}/src/utils.o \
-	${OBJECTDIR}/stack_lazySync/list.o \
-	${OBJECTDIR}/stack_lazySync/stack.o
+OBJECTFILES=
 
 
 # C Compiler Flags
@@ -66,36 +60,6 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hy486_phasea.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/hy486_phasea ${OBJECTFILES} ${LDLIBSOPTIONS}
-
-${OBJECTDIR}/src/client.o: src/client.c
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/client.o src/client.c
-
-${OBJECTDIR}/src/main.o: src/main.c
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/main.o src/main.c
-
-${OBJECTDIR}/src/updater.o: src/updater.c
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/updater.o src/updater.c
-
-${OBJECTDIR}/src/utils.o: src/utils.c
-	${MKDIR} -p ${OBJECTDIR}/src
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/utils.o src/utils.c
-
-${OBJECTDIR}/stack_lazySync/list.o: stack_lazySync/list.c
-	${MKDIR} -p ${OBJECTDIR}/stack_lazySync
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stack_lazySync/list.o stack_lazySync/list.c
-
-${OBJECTDIR}/stack_lazySync/stack.o: stack_lazySync/stack.c
-	${MKDIR} -p ${OBJECTDIR}/stack_lazySync
-	${RM} "$@.d"
-	$(COMPILE.c) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/stack_lazySync/stack.o stack_lazySync/stack.c
 
 # Subprojects
 .build-subprojects:
