@@ -90,22 +90,23 @@ int calculateRange(void) {
  */
 
 long calculateDuration(void) {
-    long retVal;
-    long minDuration, maxDuration;
-    minDuration = 0.9;
-    maxDuration = 1.0;
+    double retVal;
+    double minDuration, maxDuration;
+    minDuration = 0.1;
+    maxDuration = 0.3;
 
-    long failurePerc = totalFailure % 10000;
-    long successPerc = totalSuccess % 100;
+    double failurePerc = totalFailure % 1;
+    double successPerc = totalSuccess % 1;
 
-    retVal = maxDuration + (0.001) * failurePerc - (0.001) * successPerc;
+    retVal = maxDuration + (0.01) * failurePerc - (0.001) * successPerc;
 
     if (retVal < minDuration) {
         retVal = minDuration;
     } else if (retVal > maxDuration) {
         retVal = maxDuration;
     }
-    return (long) retVal * 1000000000;
+
+    return (long) (retVal * 1000000000);
 }
 
 void recordSuccess(void) {
@@ -126,13 +127,14 @@ stackNode_p visit(stackNode_p value, int range, long duration) {
 }
 
 stackNode_p exchange(exchangerNode_p slot, stackNode_p myItem, long timeout) {
-    long timeBound;
+    struct timespec * timeBound;
     stackNode_p yourItem;
     int state;
 
-    timeBound = getNanos() + timeout;
+    timeBound = calculateTimebound(timeout);
+
     while (1) {
-        if (getNanos() > timeBound) return TIMEOUT_S;
+        if (isExpired(timeBound)) return TIMEOUT_S;
         lock(&exchangeMutex);
         state = slot->state;
         yourItem = slot->node;
@@ -141,7 +143,7 @@ stackNode_p exchange(exchangerNode_p slot, stackNode_p myItem, long timeout) {
                 slot->node = myItem;
                 slot->state = WAITING;
                 unlock(&exchangeMutex);
-                while (getNanos() < timeBound) {
+                while (!isExpired(timeBound)) {
                     state = slot->state;
                     yourItem = slot->node;
                     if (state == BUSY) {
@@ -153,6 +155,7 @@ stackNode_p exchange(exchangerNode_p slot, stackNode_p myItem, long timeout) {
                 if (state == WAITING && slot->node == myItem) {
                     slot->node = NULL;
                     slot->state = EMPTY;
+
                     return TIMEOUT_S;
                 } else {
                     lock(&exchangeMutex);
@@ -253,4 +256,7 @@ void cleanStack(void) {
 
     free(TIMEOUT_S);
     TIMEOUT_S = NULL;
+
+    printf("Succeed %d\n", totalSuccess);
+    printf("Fail %d\n", totalFailure);
 }

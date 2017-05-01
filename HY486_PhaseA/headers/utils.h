@@ -44,6 +44,12 @@ void initBarrier(pthread_barrier_t *barrier, int num);
 
 void destroyBarrier(pthread_barrier_t *barrier);
 
-long getNanos(void);
+int isExpired(struct timespec *timebound);
+
+struct timespec* getNanos(void);
+
+long calculateNanos(struct timespec *time);
+
+struct timespec* calculateTimebound(long timeout);
 #endif // UTIL_H
 

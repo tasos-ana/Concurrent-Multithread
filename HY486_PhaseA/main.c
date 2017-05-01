@@ -22,6 +22,7 @@
 #include "StackCGWithElim/stackCGWithElim.h"
 
 int main(int argc, char** argv) {
+    long start = calculateNanos(getNanos());
     int opt;
     int clients = 0;
     int updaters = 0;
@@ -114,6 +115,9 @@ int main(int argc, char** argv) {
         cleanUpdaters();
         cleanStack();
         cleanList();
+        long end = calculateNanos(getNanos());
+        printf("Time: %ld ms\n", end - start);
+
     } else {
         usage();
         return EXIT_FAILURE;

@@ -82,8 +82,42 @@ void destroyBarrier(pthread_barrier_t *barrier) {
     }
 }
 
-long getNanos(void) {
-        struct timespec now;
-        clock_gettime(CLOCK_MONOTONIC, &now);
-        return (long) now.tv_sec * 1000000000 + now.tv_nsec;
+int isExpired(struct timespec *timebound) {
+    struct timespec now;
+    clock_gettime(CLOCK_MONOTONIC, &now);
+    if (now.tv_sec > timebound->tv_sec) {
+        return 1;
+    } else if (now.tv_sec == timebound->tv_sec) {
+        if (now.tv_nsec > timebound->tv_nsec) {
+            return 1;
+        }
     }
+    return 0;
+
+}
+
+struct timespec* getNanos(void) {
+    struct timespec *now = (struct timespec*) malloc(sizeof (struct timespec));
+    clock_gettime(CLOCK_MONOTONIC, now);
+    return now;
+}
+
+long calculateNanos(struct timespec *time) {
+    return (long) time->tv_sec * 1000 + time->tv_nsec / 1000000;
+}
+
+struct timespec* calculateTimebound(long timeout) {
+    struct timespec *now = getNanos();
+    int sec = timeout / 1000000000;
+    long ns = timeout % 1000000000;
+
+    now->tv_nsec += ns;
+    now->tv_sec += sec;
+
+    if (now->tv_nsec >= 1000000000) {
+        now->tv_nsec -= 1000000000;
+        ++now->tv_sec;
+    }
+
+    return now;
+}
