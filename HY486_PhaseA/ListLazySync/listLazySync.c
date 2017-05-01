@@ -1,6 +1,14 @@
-/*
- * implementation: Lazy Synchronization
- */
+/* * * * * * * * * * * * * * * * * * *\
+ *                                   *
+ *   List with Lazy Synchronization  *
+ *                                   *
+ * File: ListLazySync/listLazySync.c *
+ * Author:  Tasos Anastasas          *
+ * A.M:     3166                     *
+ * Course:  CS486                    *
+ * Project: 2017                     *
+ * Phase:   1                        *
+\* * * * * * * * * * * * * * * * * * */
 #include <stdlib.h>
 #include <limits.h>
 
@@ -87,8 +95,8 @@ int lookupList(int fileID) {
         result = curr->fileSize; //[*]
         if (curr->marked == 0 &&
                 fileID == curr->fileID) {//[*]
-            if (result == curr->fileSize) { //On succeed then linearized at line 104 {result = curr->fileSize;}
-                return_flag = 1; //on fail linearized at 105 line {if (curr->marked == 0 && fileID == curr->fileID)}
+            if (result == curr->fileSize) { //On succeed then linearized at line 93 {result = curr->fileSize;}
+                return_flag = 1; //on fail linearized at 95 line {if (curr->marked == 0 && fileID == curr->fileID)}
             }
         } else { // same linearize point with course material pdf 5
             result = -1;

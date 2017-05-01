@@ -1,3 +1,14 @@
+/* * * * * * * * * * * * * * * * * * * * *\
+ *                                       *
+ * Functions required on different files *
+ *                                       *
+ * File:    headers/utils.h              *
+ * Author:  Tasos Anastasas              *
+ * A.M:     3166                         *
+ * Course:  CS486                        *
+ * Project: 2017                         *
+ * Phase:   1                            *
+\* * * * * * * * * * * * * * * * * * * * */
 #ifndef UTIL_H
 #define UTIL_H
 
@@ -15,7 +26,7 @@
 
 pthread_mutex_t initThreadsLock;
 
-int totalThreads;
+int maxThreadNum;
 
 void usage(void);
 
@@ -32,5 +43,7 @@ void destroyMutex(pthread_mutex_t *mutex);
 void initBarrier(pthread_barrier_t *barrier, int num);
 
 void destroyBarrier(pthread_barrier_t *barrier);
+
+long getNanos(void);
 #endif // UTIL_H
 

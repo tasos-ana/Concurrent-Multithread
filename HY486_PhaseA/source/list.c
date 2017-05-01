@@ -1,6 +1,14 @@
-/*
- * implementation: general list functions
- */
+/* * * * * * * * * * * * * * *\
+ *                           *
+ * General functions of list *
+ *                           *
+ * File:    source/list.c    *
+ * Author:  Tasos Anastasas  *
+ * A.M:     3166             *
+ * Course:  CS486            *
+ * Project: 2017             *
+ * Phase:   1                *
+\* * * * * * * * * * * * * * */
 #include <stdlib.h>
 #include <limits.h>
 
@@ -33,16 +41,16 @@ void printList(void) {
     listNode_p curr = sharedList->head->next;
     listNode_p tail = sharedList->tail;
 
+    printf("\nFILESYSTEM: \n");
     if (isEmptyList()) {
         printf("Empty List\n");
     } else {
-        printf("\nFILESYSTEM: \n");
         while (curr != tail) {
             printListNode(curr);
             curr = curr->next;
         }
-        printf("Total operations: %d\n", total_operations);
     }
+    printf("Total operations: %d\n", total_operations);
 }
 
 void printListNode(listNode_p node) {
@@ -64,7 +72,6 @@ void cleanList(void) {
         curr = curr->next;
         cleanListNode(tmp);
     }
-
     cleanListNode(sharedList->head);
     cleanListNode(tail);
 

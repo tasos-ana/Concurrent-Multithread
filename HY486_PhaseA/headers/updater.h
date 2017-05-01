@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * *\
+ * File:   headers/updater.h *
+ * Author:  Tasos Anastasas  *
+ * A.M:     3166             *
+ * Course:  CS486            *
+ * Project: 2017             *
+ * Phase:   1                *
+\* * * * * * * * * * * * * * */
 #ifndef UPDATER_H
 #define UPDATER_H
 

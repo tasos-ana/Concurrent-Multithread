@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * *\
+ * File:    source/client.c  *
+ * Author:  Tasos Anastasas  *
+ * A.M:     3166             *
+ * Course:  CS486            *
+ * Project: 2017             *
+ * Phase:   1                *
+\* * * * * * * * * * * * * * */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +20,8 @@ void initClients(char* file, int clients) {
     filepath = file;
     initBarrier(&clientBarrier, clients);
 }
+
+//Function that execute every client thread
 
 void* clientLogic(void * id) {
     int threadID = *((int*) id);
@@ -54,7 +64,7 @@ void* clientLogic(void * id) {
                 break;
             default:
                 fclose(fp);
-                handle_error("Invalid event Clients");
+                handle_error("Invalid event on Clients");
         }
     }
     fclose(fp);
@@ -63,10 +73,7 @@ void* clientLogic(void * id) {
 }
 
 /*
- *  insert  :   73
- *  lookup  :   76
- *  modify  :   77
- *  delete  :   68
+ * Function for each event that executed from client on stack
  */
 void clientInsert(int threadID, int id, int fileID, int fileSize) {
     if (threadID == id) {

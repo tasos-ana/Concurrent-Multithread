@@ -1,6 +1,14 @@
-/*
- * implementation: Fine Grained Synchronization
- */
+/* * * * * * * * * * * * * * * * *\
+ *                               *   
+ *  List with Fine Grained Sync  *
+ *                               *
+ * File: ListFGSync/listFGSync.c *
+ * Author:  Tasos Anastasas      *
+ * A.M:     3166                 *
+ * Course:  CS486                *
+ * Project: 2017                 *
+ * Phase:   1                    *
+\* * * * * * * * * * * * * * * * */
 #include <stdlib.h>
 
 #include "../headers/list.h"

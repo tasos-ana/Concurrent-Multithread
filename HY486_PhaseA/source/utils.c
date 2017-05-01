@@ -1,3 +1,14 @@
+/* * * * * * * * * * * * * * * * * * * * *\
+ *                                       *
+ * Functions required on different files *
+ *                                       *
+ * File:    source/utils.c               *
+ * Author:  Tasos Anastasas              *
+ * A.M:     3166                         *
+ * Course:  CS486                        *
+ * Project: 2017                         *
+ * Phase:   1                            *
+\* * * * * * * * * * * * * * * * * * * * */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -70,3 +81,9 @@ void destroyBarrier(pthread_barrier_t *barrier) {
         handle_error_en(status, "pthread_barrier_destroy");
     }
 }
+
+long getNanos(void) {
+        struct timespec now;
+        clock_gettime(CLOCK_MONOTONIC, &now);
+        return (long) now.tv_sec * 1000000000 + now.tv_nsec;
+    }

@@ -1,6 +1,14 @@
-/*
- * implementation: Coarse Grained Stack with elimination array
- */
+/* * * * * * * * * * * * * * * * * * * * * * * *\
+ *                                             *
+ * Coarse Grained Stack with Elimination array *
+ *                                             *
+ * File:    StackCGWithElim/stackCGWithElim.c  *
+ * Author:  Tasos Anastasas                    *
+ * A.M:     3166                               *
+ * Course:  CS486                              *
+ * Project: 2017                               *
+ * Phase:   1                                  *
+\* * * * * * * * * * * * * * * * * * * * * * * */
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -19,10 +27,11 @@ void initStack(void) {
     initMutex(&printStackMutex);
 
     initMutex(&exchangeMutex);
-    minRange = totalThreads;
+    minRange = maxThreadNum;
     maxRange = minRange * 2;
     initExchanger();
 
+    //We use that node for exchange function
     TIMEOUT_S = createStackNode(-1, -1, -1);
 
     initMutex(&successMutex);
@@ -34,8 +43,11 @@ void initStack(void) {
 
 void initExchanger(void) {
     int i;
-    time_t t;
-    srand((unsigned) time(&t)); // should only be called once
+
+    struct timeval time;
+    gettimeofday(&time, NULL);
+
+    srand((time.tv_sec * 1000) + (time.tv_usec / 1000));
 
     exchanger = (exchangerNode_p*) malloc(maxRange * sizeof (exchangerNode_p));
     for (i = 0; i < maxRange; ++i) {
@@ -47,15 +59,19 @@ exchangerNode_p createExchangerNode(stackNode_p data, int state) {
     exchangerNode_p node = (exchangerNode_p) malloc(sizeof (exchangerNode_s));
     node->node = data;
     node->state = state;
-
     return node;
 }
 
+/*
+ * Tuning Range depends on fail and success
+ * on success we increase range
+ * on fail we decrease range
+ */
 int calculateRange(void) {
     int retVal;
 
     double failurePerc = totalFailure % 10000;
-    double successPerc = totalSuccess % 100;
+    double successPerc = totalSuccess % 1000;
 
     retVal = maxRange - failurePerc + successPerc;
 
@@ -67,16 +83,22 @@ int calculateRange(void) {
     return retVal;
 }
 
+/*
+ * Tuning Duration depends on fail and success
+ * on success we decrease range
+ * on fail we increase range
+ */
+
 long calculateDuration(void) {
     long retVal;
     long minDuration, maxDuration;
-    minDuration = 1.0;
-    maxDuration = 1.2;
+    minDuration = 0.9;
+    maxDuration = 1.0;
 
-    long failurePerc = totalFailure % 5000;
-    long successPerc = totalSuccess % 10;
+    long failurePerc = totalFailure % 10000;
+    long successPerc = totalSuccess % 100;
 
-    retVal = maxDuration + (0.01) * failurePerc - (0.01) * successPerc;
+    retVal = maxDuration + (0.001) * failurePerc - (0.001) * successPerc;
 
     if (retVal < minDuration) {
         retVal = minDuration;
@@ -99,8 +121,7 @@ void recordFailure(void) {
 }
 
 stackNode_p visit(stackNode_p value, int range, long duration) {
-    //int el = (rand() % range); // returns a pseudo-random integer between 0 and RAND_MAX
-    int el = random() % range;
+    int el = (rand() % range); // returns a pseudo-random integer between 0 and RAND_MAX
     return (exchange(exchanger[el], value, duration));
 }
 
@@ -140,6 +161,7 @@ stackNode_p exchange(exchangerNode_p slot, stackNode_p myItem, long timeout) {
 
                     slot->node = NULL;
                     slot->state = EMPTY;
+
                     unlock(&exchangeMutex);
                     return yourItem;
                 }
@@ -194,12 +216,6 @@ stackNode_p popStack(void) {
     return otherValue;
 }
 
-long getNanos(void) {
-    struct timespec now;
-    clock_gettime(CLOCK_MONOTONIC, &now);
-    return (long) now.tv_sec * 1000000000 + now.tv_nsec;
-}
-
 void cleanExchanger(void) {
     int i = 0;
     exchangerNode_p current;
@@ -237,7 +253,4 @@ void cleanStack(void) {
 
     free(TIMEOUT_S);
     TIMEOUT_S = NULL;
-
-    printf("Succeed: %d\n", totalSuccess);
-    printf("Failure: %d\n", totalFailure);
 }

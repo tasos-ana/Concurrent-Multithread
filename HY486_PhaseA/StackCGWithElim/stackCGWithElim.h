@@ -1,3 +1,14 @@
+/* * * * * * * * * * * * * * * * * * * * * * * *\
+ *                                             *
+ * Coarse Grained Stack with Elimination array *
+ *                                             *
+ * File:    StackCGWithElim/stackCGWithElim.h  *
+ * Author:  Tasos Anastasas                    *
+ * A.M:     3166                               *
+ * Course:  CS486                              *
+ * Project: 2017                               *
+ * Phase:   1                                  *
+\* * * * * * * * * * * * * * * * * * * * * * * */
 #ifndef STACKCGWITHELIM_H
 #define STACKCGWITHELIM_H
 
@@ -44,8 +55,6 @@ void recordFailure(void);
 stackNode_p visit(stackNode_p value, int range, long duration);
 
 stackNode_p exchange(exchangerNode_p slot, stackNode_p myItem, long timeout);
-
-long getNanos(void);
 
 void cleanExchanger(void);
 #endif // STACKCGWITHELIM_H

@@ -1,3 +1,14 @@
+/* * * * * * * * * * * * * * *\
+ *                           *
+ * General functions of list *
+ *                           *
+ * File:    headers/list.h   *
+ * Author:  Tasos Anastasas  *
+ * A.M:     3166             *
+ * Course:  CS486            *
+ * Project: 2017             *
+ * Phase:   1                *
+\* * * * * * * * * * * * * * */
 #ifndef LIST_H
 #define LIST_H
 

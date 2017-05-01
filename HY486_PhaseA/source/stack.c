@@ -1,6 +1,15 @@
-/*
- * implementation: General stack functions
- */
+/* * * * * * * * * * * * * * * *\
+ *                             *
+ * General Functions of Stack  *
+ *                             *
+ * File:    source/stack.c     *
+ * Author:  Tasos Anastasas    *
+ * A.M:     3166               *
+ * Course:  CS486              *
+ * Project: 2017               *
+ * Phase:   1                  *
+\* * * * * * * * * * * * * * * */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,13 +35,13 @@ stackNode_p createStackNode(int action, int fileID, int newFileSize) {
 }
 
 void printStack() {
+    printf("Print stack:\n");
     if (isEmptyStack()) {
-        printf("Empty stack\n");
+        printf("Empty\n");
         return;
     } else {
         lock(&(modStack->mutex));
 
-        printf("Print stack:\n");
         stackNode_p current = modStack->top;
         while (current != NULL) {
             printf("%c ", (char) (current->action));

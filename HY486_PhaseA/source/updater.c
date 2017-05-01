@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * *\
+ * File:    source/updater.c *
+ * Author:  Tasos Anastasas  *
+ * A.M:     3166             *
+ * Course:  CS486            *
+ * Project: 2017             *
+ * Phase:   1                *
+\* * * * * * * * * * * * * * */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -12,6 +20,8 @@ void initUpdaters(void) {
     clientsDone = 0;
     initMutex(&totalOperationMutex);
 }
+
+//Function that every updater thread runs
 
 void* updaterLogic(void * id) {
     int threadID = *((int*) id);
@@ -58,6 +68,9 @@ void* updaterLogic(void * id) {
     return NULL;
 }
 
+/*
+ * Function for each event that executed from updaters on list
+ */
 void updaterInsert(int threadID, int fileID, int fileSize) {
     int retVal;
     retVal = insertList(fileID, fileSize);

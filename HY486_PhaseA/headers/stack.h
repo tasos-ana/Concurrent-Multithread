@@ -1,3 +1,15 @@
+/* * * * * * * * * * * * * * * *\
+ *                             *
+ * General Functions of Stack  *
+ *                             *
+ * File:    headers/stack.h    *
+ * Author:  Tasos Anastasas    *
+ * A.M:     3166               *
+ * Course:  CS486              *
+ * Project: 2017               *
+ * Phase:   1                  *
+\* * * * * * * * * * * * * * * */
+
 #ifndef STACK_H
 #define STACK_H
 

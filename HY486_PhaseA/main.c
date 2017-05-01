@@ -1,8 +1,11 @@
-/* 
- * File:   main.c
- * Author: Tasos198
- *
- */
+/* * * * * * * * * * * * * * *\
+ * File:    main.c           *
+ * Author:  Tasos Anastasas  *
+ * A.M:     3166             *
+ * Course:  CS486            *
+ * Project: 2017             *
+ * Phase:   1                *
+\* * * * * * * * * * * * * * */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -19,8 +22,6 @@
 #include "StackCGWithElim/stackCGWithElim.h"
 
 int main(int argc, char** argv) {
-    uint64_t start, end;
-    start = getNanos();
     int opt;
     int clients = 0;
     int updaters = 0;
@@ -42,20 +43,30 @@ int main(int argc, char** argv) {
                 exit(EXIT_FAILURE);
         }
     }
+    /*
+     * Check if variable initialized
+     */
     if (clients > 0 && updaters > 0 && file != NULL) {
         int totThreads = clients + updaters;
+        /*
+         * Hold the max between updater,client
+         * we need that number on CG stack with elimination array
+         */
         if (clients > updaters) {
-            totalThreads = clients;
+            maxThreadNum = clients;
         } else {
-            totalThreads = updaters;
+            maxThreadNum = updaters;
         }
         int c = -1;
         int u = -1;
         int status, i;
         pthread_t threads[totThreads];
 
-        initMutex(&initThreadsLock); //located src/utils
+        initMutex(&initThreadsLock);
 
+        /*
+         * Initialize what we need
+         */
         initStack();
         initList();
         initUpdaters();
@@ -63,41 +74,46 @@ int main(int argc, char** argv) {
 
         while (c < (clients - 1) || u < (updaters - 1)) {
             if (c < (clients - 1)) {
-                //entered on critical region
-                lock(&initThreadsLock);
+                lock(&initThreadsLock); //entered on critical region
                 ++c;
-                //create client thread, on function we unlock mutex
+                /*
+                 * create client thread, on function we unlock mutex
+                 */
                 if ((status = pthread_create(&threads[c], NULL, (void*) clientLogic, (void *) &c)) != 0) {
                     handle_error_en(status, "pthread_create");
                 }
             }
             if (u < (updaters - 1)) {
-                //entered on critical region
-                lock(&initThreadsLock);
+                lock(&initThreadsLock); //entered on critical region
                 ++u;
-                //create updater thread, on function we unlock mutex
+                /*
+                 * create updater thread, on function we unlock mutex
+                 */
                 if ((status = pthread_create(&threads[clients + u], NULL, (void*) updaterLogic, (void *) &u)) != 0) {
                     handle_error_en(status, "pthread_create");
                 }
             }
         }
+        //Wait all the clients to finish
         for (i = 0; i < clients; i++) {
             pthread_join(threads[i], NULL);
         }
         clientsDone = 1;
 
+        //Wait all the updaters to finish
         for (i = clients; i < clients + updaters; i++) {
             pthread_join(threads[i], NULL);
         }
 
-        //printList();
+        //Print the list
+        printList();
+
+        //CleanUp
         destroyMutex(&initThreadsLock); //located src/utils
         cleanClient();
         cleanUpdaters();
         cleanStack();
         cleanList();
-        end = getNanos();
-        printf("Time: %" PRIu64 " ms \n", (end - start)/1000000);
     } else {
         usage();
         return EXIT_FAILURE;

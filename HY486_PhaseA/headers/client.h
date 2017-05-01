@@ -1,3 +1,11 @@
+/* * * * * * * * * * * * * * *\
+ * File:    headers/client.h *
+ * Author:  Tasos Anastasas  *
+ * A.M:     3166             *
+ * Course:  CS486            *
+ * Project: 2017             *
+ * Phase:   1                *
+\* * * * * * * * * * * * * * */
 #ifndef CLIENT_H
 #define CLIENT_H
 
@@ -21,5 +29,6 @@ void clientDelete(int threadID, int id, int fileID);
 void barrier(int threadID, int wait);
 
 void cleanClient(void);
+
 #endif // CLIENT_H
 

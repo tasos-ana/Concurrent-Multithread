@@ -1,6 +1,14 @@
-/*
- * implementation: Coarse Grained Stack withou elimination array
- */
+/* * * * * * * * * * * * * * * * * * * * * * *\
+ *                                           *
+ * Coarse Grained Stack without elimination  *
+ *                                           *
+ * File:    StackCG/stackCG.c                *
+ * Author:  Tasos Anastasas                  *
+ * A.M:     3166                             *
+ * Course:  CS486                            *
+ * Project: 2017                             *
+ * Phase:   1                                *
+\* * * * * * * * * * * * * * * * * * * * * * */
 #include <stdio.h>
 #include <stdlib.h>
 
