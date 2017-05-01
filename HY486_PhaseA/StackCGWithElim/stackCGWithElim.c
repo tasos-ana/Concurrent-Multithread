@@ -28,7 +28,7 @@ void initStack(void) {
 
     initMutex(&exchangeMutex);
     minRange = maxThreadNum;
-    maxRange = minRange * 2;
+    maxRange = minRange + minRange / 2;
     initExchanger();
 
     //We use that node for exchange function
@@ -43,12 +43,9 @@ void initStack(void) {
 
 void initExchanger(void) {
     int i;
-
     struct timeval time;
     gettimeofday(&time, NULL);
-
     srand((time.tv_sec * 1000) + (time.tv_usec / 1000));
-
     exchanger = (exchangerNode_p*) malloc(maxRange * sizeof (exchangerNode_p));
     for (i = 0; i < maxRange; ++i) {
         exchanger[i] = createExchangerNode(NULL, EMPTY);
@@ -70,10 +67,14 @@ exchangerNode_p createExchangerNode(stackNode_p data, int state) {
 int calculateRange(void) {
     int retVal;
 
-    double failurePerc = totalFailure % 10000;
-    double successPerc = totalSuccess % 1000;
+    int total = totalFailure + totalSuccess;
+    if (total == 0) {
+        retVal = maxRange;
+    } else {
+        double failurePerc = totalFailure / total;
 
-    retVal = maxRange - failurePerc + successPerc;
+        retVal = (0.55) * maxRange - (0.45) * failurePerc * (maxRange - minRange);
+    }
 
     if (retVal < minRange) {
         retVal = minRange;
@@ -92,19 +93,19 @@ int calculateRange(void) {
 long calculateDuration(void) {
     double retVal;
     double minDuration, maxDuration;
-    minDuration = 0.1;
-    maxDuration = 0.3;
+    minDuration = 0.05;
+    maxDuration = 0.1;
 
-    double failurePerc = totalFailure % 1;
-    double successPerc = totalSuccess % 1;
-
-    retVal = maxDuration + (0.01) * failurePerc - (0.001) * successPerc;
-
-    if (retVal < minDuration) {
+    int total = totalFailure + totalSuccess;
+    if (total == 0) {
         retVal = minDuration;
-    } else if (retVal > maxDuration) {
-        retVal = maxDuration;
+    } else {
+        double failurePerc = totalFailure / total;
+        retVal = minDuration + (maxDuration - minDuration) * failurePerc * 0.01;
     }
+
+    assert(retVal >= minDuration);
+    assert(retVal <= maxDuration);
 
     return (long) (retVal * 1000000000);
 }
